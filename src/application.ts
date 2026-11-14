@@ -17,6 +17,7 @@ export class Application {
   public async init(uri?: string): Promise<void> {
     this.config.validate({ allowed: 'strict' });
     await this.databaseClient.connect(uri);
+    this.initMiddleware();
     const port = this.config.get('port');
     await new Promise<void>((resolve, reject) => {
       const server = this.expressApp.listen(port, () => {
@@ -26,6 +27,10 @@ export class Application {
       });
       server.once('error', reject);
     });
+  }
+
+  public initMiddleware(): void {
+    this.expressApp.use(express.json());
   }
 
   public async close(): Promise<void> {
