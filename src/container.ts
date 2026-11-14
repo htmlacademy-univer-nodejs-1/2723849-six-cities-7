@@ -1,3 +1,9 @@
+import {FavouriteModel, FavouriteEntity} from './shared/modules/favourites/favourite.model.js';
+import {FavouriteService} from './shared/modules/favourites/favourite.service.js';
+import type {IFavouriteService} from './shared/modules/favourites/favourite-service.interface.js';
+import {CommentModel, CommentEntity} from './shared/modules/comment/comment.model.js';
+import {CommentService} from './shared/modules/comment/comment.service.js';
+import type {ICommentService} from './shared/modules/comment/comment-service.interface.js';
 import { Container } from 'inversify';
 import {TYPES} from './shared/types/di.type.js';
 import {PinoLogger} from './shared/logger/pino-logger.js';
@@ -35,3 +41,9 @@ container.bind<IUserService>(TYPES.UserService).to(UserService).inSingletonScope
 container.bind<Model<UserEntity>>(TYPES.UserModel).toConstantValue(UserModel);
 container.bind<IOfferService>(TYPES.OfferService).to(OfferService).inSingletonScope();
 container.bind<Model<OfferEntity>>(TYPES.OfferModel).toConstantValue(OfferModel);
+
+container.bind<ICommentService>(TYPES.CommentService).to(CommentService).inSingletonScope();
+container.bind<Model<CommentEntity>>(TYPES.CommentModel).toConstantValue(CommentModel);
+
+container.bind<IFavouriteService>(TYPES.FavouriteService).to(FavouriteService).inSingletonScope();
+container.bind<Model<FavouriteEntity>>(TYPES.FavouriteModel).toConstantValue(FavouriteModel);
