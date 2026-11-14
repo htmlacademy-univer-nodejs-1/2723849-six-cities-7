@@ -1,12 +1,25 @@
-import { readFile } from 'node:fs/promises';
+import { createReadStream } from 'node:fs';
+import { createInterface } from 'node:readline';
 
 export class TSVFileReader {
-  async read(filename: string): Promise<string[][]> {
-    const content = await readFile(filename, 'utf-8');
-    return content
-      .replace(/^\uFEFF/, '')
-      .split(/\r?\n/)
-      .filter((line) => line.length > 0)
-      .map((line) => line.split('\t'));
+  async *read(filename: string): AsyncGenerator<string[]> {
+    const stream = createReadStream(filename, { encoding: 'utf8' });
+    const lines = createInterface({
+      input: stream,
+      crlfDelay: Infinity
+    });
+
+    try {
+      for await (const line of lines) {
+        if (line.length === 0) {
+          continue;
+        }
+
+        yield line.replace(/^\uFEFF/, '').split('\t');
+      }
+    } finally {
+      lines.close();
+      stream.destroy();
+    }
   }
 }

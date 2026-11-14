@@ -12,9 +12,16 @@ export class ImportCommand implements ICommand {
       throw new Error(chalk.red('Expected tsv file'));
     }
     const reader = new TSVFileReader();
-    const rows = await reader.read(filename);
+    let count = 0;
 
-    console.dir(rows, { depth: null });
+    for await (const fields of reader.read(filename)) {
+      if (fields.length !== 21) {
+        throw new Error(`Некорректное количество полей в строке ${count + 1}`);
+      }
+      count++;
+    }
+
+    console.log(chalk.green(`Прочитано предложений: ${count}`));
   }
 
   getName(): string {

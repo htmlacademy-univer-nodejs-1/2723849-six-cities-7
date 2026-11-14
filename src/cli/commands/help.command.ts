@@ -11,6 +11,8 @@ export class HelpCommand implements ICommand {
         ${chalk.greenBright('--help')}: ${chalk.blueBright('Показать справку')}
         ${chalk.greenBright('--version')}: ${chalk.blueBright('Показать версию приложения')}
         ${chalk.greenBright('--import <path>')}: ${chalk.blueBright('Импортировать данные из TSV-файла')}
+        ${chalk.greenBright('--generate <n> <filepath> <url>')}: ${chalk.blueBright('Сгенерировать n предложений' +
+                    'на основе данных с сервера лежащего по url и сохранить их в filepath ')}
     `);
   }
 

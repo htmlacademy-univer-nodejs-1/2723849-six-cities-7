@@ -1,14 +1,14 @@
-import {City} from "./city.type";
-import {HousingType} from "./housing-type.type";
-import {AmenitiesType} from "./amenities-type.type";
-import {User} from "./user.type";
-import {Coordinates} from "./coordinates.type";
+import {CityName} from './city-name.type';
+import {HousingType} from './housing-type.type';
+import {AmenitiesType} from './amenities-type.type';
+import {User} from './user.type';
+import {Coordinates} from './coordinates.type';
 
 export type Offer = {
   title: string;
   description: string;
   date: Date;
-  city: City
+  city: CityName
   previewImage: string;
   housingImages: string[];
   isPremium: boolean;
@@ -18,7 +18,7 @@ export type Offer = {
   roomCount: number;
   guestCount: number;
   rentPrice: number;
-  amenities: AmenitiesType;
+  amenities: AmenitiesType[];
   author: User;
   coordinates: Coordinates
 }

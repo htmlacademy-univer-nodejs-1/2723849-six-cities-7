@@ -1,8 +1,7 @@
-export const Cities = ['Paris', 'Cologne', 'Brussels',
-  'Amsterdam', 'Hamburg', 'Dusseldorf'] as const;
+import {CityName} from "./city-name.type";
+import {Coordinates} from "./coordinates.type";
 
-export type City = typeof Cities[number];
-
-export function asCity(city: string): City | undefined {
-  return Cities.find((c) => c === city);
+export type City = {
+  city: CityName;
+  location: Coordinates;
 }

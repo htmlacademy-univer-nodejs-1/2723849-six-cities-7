@@ -1,0 +1,136 @@
+{
+  "api": {
+    "titles": [
+      "Уютная квартира в центре города",
+      "Светлая студия рядом с парком",
+      "Просторный дом с садом",
+      "Комната с красивым видом",
+      "Современные апартаменты"
+    ],
+    "descriptions": [
+      "Уютное жильё в центре города. Рядом расположены кафе, магазины и остановки общественного транспорта.",
+      "Светлая студия для спокойного отдыха. В пешей доступности находится большой парк и продуктовый магазин.",
+      "Просторный дом с оборудованной кухней и собственным садом. Подходит для отдыха с семьёй или друзьями.",
+      "Комфортная комната с красивым видом. В квартире есть всё необходимое для короткого пребывания.",
+      "Современные апартаменты с новой мебелью. Удобное расположение позволяет быстро добраться до центра города."
+    ],
+    "postDates": [
+      "2026-10-01T10:00:00.000Z",
+      "2026-10-05T12:30:00.000Z",
+      "2026-10-10T08:15:00.000Z",
+      "2026-10-15T17:45:00.000Z",
+      "2026-10-19T14:20:00.000Z"
+    ],
+    "cities": [
+      {
+        "city": "Paris",
+        "location": {
+          "latitude": 48.85661,
+          "longitude": 2.351499
+        }
+      },
+      {
+        "city": "Cologne",
+        "location": {
+          "latitude": 50.938361,
+          "longitude": 6.959974
+        }
+      },
+      {
+        "city": "Brussels",
+        "location": {
+          "latitude": 50.846557,
+          "longitude": 4.351697
+        }
+      },
+      {
+        "city": "Amsterdam",
+        "location": {
+          "latitude": 52.370216,
+          "longitude": 4.895168
+        }
+      },
+      {
+        "city": "Hamburg",
+        "location": {
+          "latitude": 53.550341,
+          "longitude": 10.000654
+        }
+      },
+      {
+        "city": "Dusseldorf",
+        "location": {
+          "latitude": 51.225402,
+          "longitude": 6.776314
+        }
+      }
+    ],
+    "previewImages": [
+      "https://example.com/images/preview-1.jpg",
+      "https://example.com/images/preview-2.jpg",
+      "https://example.com/images/preview-3.jpg",
+      "https://example.com/images/preview-4.jpg",
+      "https://example.com/images/preview-5.jpg"
+    ],
+    "images": [
+      "https://example.com/images/housing-1.jpg",
+      "https://example.com/images/housing-2.jpg",
+      "https://example.com/images/housing-3.jpg",
+      "https://example.com/images/housing-4.jpg",
+      "https://example.com/images/housing-5.jpg",
+      "https://example.com/images/housing-6.jpg"
+    ],
+    "housingTypes": [
+      "apartment",
+      "house",
+      "room",
+      "hotel"
+    ],
+    "amenities": [
+      "Breakfast",
+      "Air conditioning",
+      "Laptop friendly workspace",
+      "Baby seat",
+      "Washer",
+      "Towels",
+      "Fridge"
+    ],
+    "users": [
+      {
+        "name": "Анна",
+        "email": "anna@example.com",
+        "avatar": "https://example.com/avatars/anna.jpg",
+        "password": "secret123",
+        "type": "обычный"
+      },
+      {
+        "name": "Иван",
+        "email": "ivan@example.com",
+        "avatar": "https://example.com/avatars/ivan.jpg",
+        "password": "travel123",
+        "type": "pro"
+      },
+      {
+        "name": "Мария",
+        "email": "maria@example.com",
+        "avatar": "https://example.com/avatars/maria.jpg",
+        "password": "holiday123",
+        "type": "обычный"
+      },
+      {
+        "name": "Алексей",
+        "email": "alexey@example.com",
+        "avatar": "https://example.com/avatars/alexey.jpg",
+        "password": "welcome123",
+        "type": "pro"
+      },
+      {
+        "name": "Елена",
+        "email": "elena@example.com",
+        "avatar": "https://example.com/avatars/elena.jpg",
+        "password": "citytrip123",
+        "type": "обычный"
+      }
+    ]
+  }
+}
