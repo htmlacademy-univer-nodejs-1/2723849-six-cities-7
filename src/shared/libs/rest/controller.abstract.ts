@@ -4,6 +4,7 @@ import {Response, Router} from 'express';
 import type {IRoute} from './route.interface.js';
 import {StatusCodes} from 'http-status-codes';
 import {injectable} from 'inversify';
+import asyncHandler from 'express-async-handler';
 
 @injectable()
 export abstract class Controller implements IController {
@@ -11,7 +12,13 @@ export abstract class Controller implements IController {
 
   public addRoute<P extends ParamsDictionary>(route: IRoute<P>): void {
     const handler = route.handler.bind(this);
-    this.router[route.method]<P>(route.path, handler);
+
+    this.router[route.method]<P>(
+      route.path,
+      asyncHandler<P>(async (req, res, next): Promise<void> => {
+        await handler(req, res, next);
+      })
+    );
   }
 
   protected send<T>(res: Response, statusCode: number, data: T): void {
