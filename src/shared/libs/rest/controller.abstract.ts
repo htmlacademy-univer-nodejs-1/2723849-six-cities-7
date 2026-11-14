@@ -2,7 +2,9 @@ import {IController} from './controller.interface';
 import {Response, Router} from 'express';
 import {IRoute} from './route.interface';
 import {StatusCodes} from 'http-status-codes';
+import {injectable} from 'inversify';
 
+@injectable()
 export abstract class Controller implements IController {
   public readonly router = Router();
 

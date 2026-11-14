@@ -25,6 +25,7 @@ import {UserService} from './shared/modules/user/user.service.js';
 import {IOfferService} from './shared/modules/offer/offer-service.interface.js';
 import {OfferEntity, OfferModel} from './shared/modules/offer/offer.model.js';
 import {OfferService} from './shared/modules/offer/offer.service.js';
+import {UserController} from './shared/modules/user/user.controller.js';
 
 export const container = new Container();
 container.bind<ILogger>(TYPES.Logger).to(PinoLogger).inSingletonScope();
@@ -47,3 +48,4 @@ container.bind<Model<CommentEntity>>(TYPES.CommentModel).toConstantValue(Comment
 
 container.bind<IFavouriteService>(TYPES.FavouriteService).to(FavouriteService).inSingletonScope();
 container.bind<Model<FavouriteEntity>>(TYPES.FavouriteModel).toConstantValue(FavouriteModel);
+container.bind<UserController>(TYPES.UserController).to(UserController).inSingletonScope();
