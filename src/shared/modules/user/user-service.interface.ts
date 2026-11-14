@@ -1,15 +1,9 @@
-import {UserDocument} from './user.model.js';
-
-export type CreateUserData = {
-  name: string,
-  email: string,
-  avatar?: string,
-  passwordHash: string;
-  type: string
-};
+import type {UserDocument} from './user.model.js';
+import type {CreateUserDto} from './dto/create-user.dto.js';
 
 export interface IUserService {
   findById(id: string): Promise<UserDocument | null>;
   findByEmail(email: string): Promise<UserDocument | null>;
-  create(user: CreateUserData): Promise<UserDocument>;
+  create(dto: CreateUserDto): Promise<UserDocument>;
+  verifyPassword(email: string, password: string): Promise<UserDocument | null>;
 }

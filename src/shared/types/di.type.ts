@@ -1,4 +1,13 @@
 export const TYPES = {
+  AuthService: Symbol.for('AuthService'),
+  SessionModel: Symbol.for('SessionModel'),
+  OfferController: Symbol.for('OfferController'),
+  CityController: Symbol.for('CityController'),
+  FavouriteController: Symbol.for('FavouriteController'),
+  CommentModel: Symbol.for('CommentModel'),
+  CommentService: Symbol.for('CommentService'),
+  FavouriteModel: Symbol.for('FavouriteModel'),
+  FavouriteService: Symbol.for('FavouriteService'),
   Logger: Symbol.for('Logger'),
   Config: Symbol.for('Config'),
   DatabaseClient: Symbol.for('DatabaseClient'),
@@ -6,4 +15,6 @@ export const TYPES = {
   UserService: Symbol.for('UserService'),
   OfferModel: Symbol.for('OfferModel'),
   OfferService: Symbol.for('OfferService'),
+  UserController: Symbol.for('UserController'),
+  ExceptionFilter: Symbol.for('ExceptionFilter'),
 };

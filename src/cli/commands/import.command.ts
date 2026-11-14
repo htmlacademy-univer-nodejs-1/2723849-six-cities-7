@@ -4,19 +4,16 @@ import {TSVFileReader} from '../../shared/file-reader/tsv-file-reader.js';
 import {inject, injectable} from 'inversify';
 import {ILogger} from '../../shared/logger/logger.interface.js';
 import {TYPES} from '../../shared/types/di.type.js';
-import {AppConfig} from '../../shared/config/config.js';
 import {IUserService} from '../../shared/modules/user/user-service.interface.js';
 import {IOfferService} from '../../shared/modules/offer/offer-service.interface.js';
 import {parseOffer} from '../../shared/helpers/offer.js';
-import {scryptSync} from 'node:crypto';
 
 @injectable()
 export class ImportCommand implements ICommand {
   constructor(@inject(TYPES.Logger) private readonly logger: ILogger,
               @inject(TSVFileReader) private readonly reader: TSVFileReader,
               @inject(TYPES.OfferService) private readonly offerService: IOfferService,
-              @inject(TYPES.UserService) private readonly userService: IUserService,
-              @inject(TYPES.Config) private readonly config: AppConfig
+              @inject(TYPES.UserService) private readonly userService: IUserService
   ) {
   }
 
@@ -36,23 +33,12 @@ export class ImportCommand implements ICommand {
       let author = await this.userService.findByEmail(offer.author.email);
 
       if (!author) {
-        const salt = this.config.get('salt');
-
-        if (salt.length === 0) {
-          throw new Error('SALT must be a non-empty string');
-        }
-        const passwordHash = scryptSync(
-          offer.author.password,
-          salt,
-          64
-        ).toString('hex');
-
         author = await this.userService.create({
           name: offer.author.name,
           email: offer.author.email,
           avatar: offer.author.avatar,
-          passwordHash,
-          type: offer.author.type
+          password: offer.author.password,
+          userType: offer.author.type === 'Pro' ? 'pro' : 'regular'
         });
       }
 

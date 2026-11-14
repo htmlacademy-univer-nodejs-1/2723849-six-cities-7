@@ -1,7 +1,7 @@
 {
   "name": "six-cities",
   "version": "4.0.0",
-  "description": "Проект «Шесть городов» от HTML Academy",
+  "description": "РџСЂРѕРµРєС‚ В«РЁРµСЃС‚СЊ РіРѕСЂРѕРґРѕРІВ» РѕС‚ HTML Academy",
   "keywords": [
     "rest",
     "api",
@@ -13,6 +13,7 @@
     "cli": "node dist/cli.js",
     "cli:pretty": "node dist/cli.js | pino-pretty",
     "build": "npm run clean && npm run compile",
+    "test": "npm run build && node --test tests/*.test.mjs",
     "lint": "eslint src/ --ext .ts",
     "compile": "tsc -p tsconfig.json",
     "clean": "rimraf dist",
@@ -38,11 +39,16 @@
     "npm": ">=8"
   },
   "dependencies": {
+    "@types/express": "5.0.6",
     "axios": "^1.20.0",
     "chalk": "^5.6.2",
+    "class-transformer": "0.5.1",
     "convict": "^6.2.5",
     "convict-format-with-validator": "^6.2.0",
     "dotenv": "^18.0.8",
+    "express": "5.3.0",
+    "express-async-handler": "1.2.0",
+    "http-status-codes": "2.3.0",
     "inversify": "^6.0.1",
     "json-server": "^1.0.0-beta.15",
     "mongoose": "^9.11.2",

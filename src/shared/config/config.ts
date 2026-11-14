@@ -5,6 +5,11 @@ import validator from 'convict-format-with-validator';
 convict.addFormats(validator);
 
 export const config = convict({
+  authTokenTtl: {
+    env: 'AUTH_TOKEN_TTL',
+    format: 'nat',
+    default: 86400
+  },
   dbPort: {
     env: 'DB_PORT',
     format: 'port',
