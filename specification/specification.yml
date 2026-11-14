@@ -1,0 +1,997 @@
+
+openapi: 3.0.0
+
+info:
+  title: API для проекта Six Cities
+  version: 1.0.0
+
+servers:
+  - url: http://localhost:3000
+
+tags:
+  - name: offers
+    description: Действия с предложениями по аренде
+  - name: comments
+    description: Действия с комментариями
+  - name: users
+    description: Действия с пользователями
+  - name: favourites
+    description: Действия с избранным
+
+paths:
+  /offers:
+    post:
+      operationId: createOffer
+      summary: Создать предложение
+      tags:
+        - offers
+      security:
+        - bearerAuth: []
+
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateOffer'
+
+      responses:
+        '201':
+          description: Предложение создано
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Offer'
+        '400':
+          description: Ошибка валидации
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '401':
+          description: Пользователь не авторизован
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+
+    get:
+      operationId: getOffers
+      summary: Получить список предложений
+      description: Возвращает предложения по дате публикации в порядке убывания
+      tags:
+        - offers
+
+      parameters:
+        - name: limit
+          in: query
+          required: false
+          description: Количество предложений
+          schema:
+            type: integer
+            minimum: 1
+            default: 60
+
+      responses:
+        '200':
+          description: Список предложений успешно получен
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/OfferPreview'
+        '400':
+          description: Некорректное значение параметра limit
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+
+  /offers/{offerId}:
+    get:
+      operationId: getOffer
+      summary: Получить предложение по ID
+      tags:
+        - offers
+
+      parameters:
+        - name: offerId
+          in: path
+          required: true
+          description: Идентификатор предложения
+          schema:
+            type: string
+
+      responses:
+        '200':
+          description: Предложение успешно получено
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Offer'
+
+        '404':
+          description: Предложение не найдено
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+    patch:
+      operationId: updateOffer
+      summary: Редактировать предложение
+      tags:
+        - offers
+      security:
+        - bearerAuth: []
+
+      parameters:
+        - name: offerId
+          in: path
+          required: true
+          description: Идентификатор предложения
+          schema:
+            type: string
+
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateOffer'
+
+      responses:
+        '200':
+          description: Предложение обновлено
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Offer'
+
+        '400':
+          description: Ошибка валидации
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+
+        '401':
+          description: Пользователь не авторизован
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+
+        '403':
+          description: Нет прав на редактирование предложения
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+
+        '404':
+          description: Предложение не найдено
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+    delete:
+      operationId: deleteOffer
+      summary: Удалить предложение
+      tags:
+        - offers
+      security:
+        - bearerAuth: []
+
+      parameters:
+        - name: offerId
+          in: path
+          required: true
+          description: Идентификатор предложения
+          schema:
+            type: string
+
+      responses:
+        '204':
+          description: Предложение успешно удалено
+
+        '401':
+          description: Пользователь не авторизован
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+
+        '403':
+          description: Нет прав на удаление предложения
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+
+        '404':
+          description: Предложение не найдено
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+  /offers/{offerId}/comments:
+    get:
+      operationId: getOfferComments
+      summary: Получить комментарии к предложению
+      description: Возвращает до 50 последних комментариев, отсортированных по дате публикации по убыванию
+      tags:
+        - comments
+
+      parameters:
+        - name: offerId
+          in: path
+          required: true
+          description: Идентификатор предложения
+          schema:
+            type: string
+
+      responses:
+        '200':
+          description: Список комментариев успешно получен
+          content:
+            application/json:
+              schema:
+                type: array
+                maxItems: 50
+                items:
+                  $ref: '#/components/schemas/Comment'
+
+        '404':
+          description: Предложение не найдено
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+    post:
+      operationId: createComment
+      summary: Добавить комментарий к предложению
+      tags:
+        - comments
+      security:
+        - bearerAuth: []
+
+      parameters:
+        - name: offerId
+          in: path
+          required: true
+          description: Идентификатор предложения
+          schema:
+            type: string
+
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateComment'
+
+      responses:
+        '201':
+          description: Комментарий создан
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Comment'
+
+        '400':
+          description: Ошибка валидации
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+
+        '401':
+          description: Пользователь не авторизован
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+
+        '404':
+          description: Предложение не найдено
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+  /users:
+    post:
+      operationId: createUser
+      summary: Зарегистрировать пользователя
+      tags:
+        - users
+
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateUser'
+
+      responses:
+        '201':
+          description: Пользователь успешно создан
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+
+        '400':
+          description: Ошибка валидации
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+
+        '403':
+          description: Регистрация доступна только анонимным пользователям
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+
+        '409':
+          description: Пользователь с таким email уже существует
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+  /users/login:
+    post:
+      operationId: loginUser
+      summary: Авторизация пользователя
+      tags:
+        - users
+
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoginUser'
+
+      responses:
+        '200':
+          description: Авторизация успешна
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthToken'
+
+        '400':
+          description: Некорректные данные запроса
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+
+        '401':
+          description: Неверный email или пароль
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+    get:
+      operationId: checkUserAuth
+      summary: Проверить авторизацию пользователя
+      tags:
+        - users
+      security:
+        - bearerAuth: []
+
+      responses:
+        '200':
+          description: Пользователь авторизован
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+
+        '401':
+          description: Пользователь не авторизован или токен недействителен       
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+  /cities/{city}/premium:
+    get:
+      operationId: getPremiumOffers
+      summary: Получить премиальные предложения города
+      description: Возвращает до 3 премиальных предложений, отсортированных по дате публикации по убыванию
+      tags:
+        - offers
+
+      parameters:
+        - name: city
+          in: path
+          required: true
+          description: Название города
+          schema:
+            type: string
+            enum:
+              - Paris
+              - Cologne
+              - Brussels
+              - Amsterdam
+              - Hamburg
+              - Dusseldorf
+
+      responses:
+        '200':
+          description: Список премиальных предложений успешно получен
+          content:
+            application/json:
+              schema:
+                type: array
+                maxItems: 3
+                items:
+                  $ref: '#/components/schemas/OfferPreview'
+
+        '400':
+          description: Некорректное название города
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+  /favorites:
+    get:
+      operationId: getFavoriteOffers
+      summary: Получить избранные предложения
+      description: Возвращает все предложения, добавленные пользователем в избранное
+      tags:
+        - favourites
+      security:
+        - bearerAuth: []
+
+      responses:
+        '200':
+          description: Список избранных предложений успешно получен
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/OfferPreview'
+
+        '401':
+          description: Пользователь не авторизован
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+  /favorites/{offerId}:
+    post:
+      operationId: addOfferToFavorites
+      summary: Добавить предложение в избранное
+      tags:
+        - favourites
+      security:
+        - bearerAuth: []
+
+      parameters:
+        - name: offerId
+          in: path
+          required: true
+          description: Идентификатор предложения
+          schema:
+            type: string
+
+      responses:
+        '204':
+          description: Предложение добавлено в избранное
+
+        '401':
+          description: Пользователь не авторизован
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+
+        '404':
+          description: Предложение не найдено
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+
+        '409':
+          description: Предложение уже находится в избранном
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+
+    delete:
+      operationId: removeOfferFromFavorites
+      summary: Удалить предложение из избранного
+      tags:
+        - favourites
+      security:
+        - bearerAuth: []
+
+      parameters:
+        - name: offerId
+          in: path
+          required: true
+          description: Идентификатор предложения
+          schema:
+            type: string
+
+      responses:
+        '204':
+          description: Предложение удалено из избранного
+
+        '401':
+          description: Пользователь не авторизован
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+
+        '404':
+          description: Предложение не найдено или отсутствует в избранном
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+
+
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
+  schemas:
+    CreateOffer:
+      type: object
+      required:
+        - title
+        - description
+        - city
+        - previewImage
+        - images
+        - isPremium
+        - type
+        - roomsCount
+        - guestsCount
+        - price
+        - amenities
+        - location
+
+      properties:
+        title:
+          type: string
+          minLength: 10
+          maxLength: 100
+
+        description:
+          type: string
+          minLength: 20
+          maxLength: 1024
+
+        city:
+          type: string
+          enum:
+            - Paris
+            - Cologne
+            - Brussels
+            - Amsterdam
+            - Hamburg
+            - Dusseldorf
+
+        previewImage:
+          type: string
+          format: uri
+
+        images:
+          type: array
+          minItems: 6
+          maxItems: 6
+          items:
+            type: string
+            format: uri
+
+        isPremium:
+          type: boolean
+
+        type:
+          type: string
+          enum:
+            - apartment
+            - house
+            - room
+            - hotel
+
+        roomsCount:
+          type: integer
+          minimum: 1
+          maximum: 8
+
+        guestsCount:
+          type: integer
+          minimum: 1
+          maximum: 10
+
+        price:
+          type: integer
+          minimum: 100
+          maximum: 100000
+
+        amenities:
+          type: array
+          minItems: 1
+          uniqueItems: true
+          items:
+            type: string
+            enum:
+              - Breakfast
+              - Air conditioning
+              - Laptop friendly workspace
+              - Baby seat
+              - Washer
+              - Towels
+              - Fridge
+
+        location:
+          $ref: '#/components/schemas/Location'
+
+    Location:
+      type: object
+      required:
+        - latitude
+        - longitude
+
+      properties:
+        latitude:
+          type: number
+          format: double
+          minimum: -90
+          maximum: 90
+
+        longitude:
+          type: number
+          format: double
+          minimum: -180
+          maximum: 180
+
+    Offer:
+      allOf:
+        - $ref: '#/components/schemas/CreateOffer'
+        - type: object
+          required:
+            - id
+            - createdAt
+            - isFavorite
+            - rating
+            - author
+            - commentCount
+
+          properties:
+            id:
+              type: string
+              readOnly: true
+
+            createdAt:
+              type: string
+              format: date-time
+              readOnly: true
+
+            isFavorite:
+              type: boolean
+              readOnly: true
+
+            rating:
+              type: number
+              minimum: 1
+              maximum: 5
+              multipleOf: 0.1
+              readOnly: true
+
+            author:
+              $ref: '#/components/schemas/User'
+
+            commentCount:
+              type: integer
+              minimum: 0
+              readOnly: true
+
+    User:
+      type: object
+      required:
+        - id
+        - name
+        - email
+        - userType
+        - avatar
+
+      properties:
+        id:
+          type: string
+
+        name:
+          type: string
+          minLength: 1
+          maxLength: 15
+
+        email:
+          type: string
+          format: email
+
+        userType:
+          type: string
+          enum:
+            - regular
+            - pro
+
+        avatar:
+          type: string
+          format: uri
+
+    OfferPreview:
+      type: object
+      required:
+        - id
+        - price
+        - title
+        - type
+        - isFavorite
+        - createdAt
+        - city
+        - previewImage
+        - isPremium
+        - rating
+        - commentCount
+
+      properties:
+        id:
+          type: string
+
+        price:
+          type: integer
+          minimum: 100
+          maximum: 100000
+
+        title:
+          type: string
+          minLength: 10
+          maxLength: 100
+
+        type:
+          type: string
+          enum:
+            - apartment
+            - house
+            - room
+            - hotel
+
+        isFavorite:
+          type: boolean
+
+        createdAt:
+          type: string
+          format: date-time
+
+        city:
+          type: string
+          enum:
+            - Paris
+            - Cologne
+            - Brussels
+            - Amsterdam
+            - Hamburg
+            - Dusseldorf
+
+        previewImage:
+          type: string
+          format: uri
+
+        isPremium:
+          type: boolean
+
+        rating:
+          type: number
+          minimum: 1
+          maximum: 5
+          multipleOf: 0.1
+
+        commentCount:
+          type: integer
+          minimum: 0
+    UpdateOffer:
+      type: object
+      properties:
+        title:
+          type: string
+          minLength: 10
+          maxLength: 100
+
+        description:
+          type: string
+          minLength: 20
+          maxLength: 1024
+
+        city:
+          type: string
+          enum:
+            - Paris
+            - Cologne
+            - Brussels
+            - Amsterdam
+            - Hamburg
+            - Dusseldorf
+
+        previewImage:
+          type: string
+          format: uri
+
+        images:
+          type: array
+          minItems: 6
+          maxItems: 6
+          items:
+            type: string
+            format: uri
+
+        isPremium:
+          type: boolean
+
+        type:
+          type: string
+          enum:
+            - apartment
+            - house
+            - room
+            - hotel
+
+        roomsCount:
+          type: integer
+          minimum: 1
+          maximum: 8
+
+        guestsCount:
+          type: integer
+          minimum: 1
+          maximum: 10
+
+        price:
+          type: integer
+          minimum: 100
+          maximum: 100000
+
+        amenities:
+          type: array
+          minItems: 1
+          uniqueItems: true
+          items:
+            type: string
+            enum:
+              - Breakfast
+              - Air conditioning
+              - Laptop friendly workspace
+              - Baby seat
+              - Washer
+              - Towels
+              - Fridge
+
+        location:
+          $ref: '#/components/schemas/Location'
+
+    Comment:
+      type: object
+      required:
+        - id
+        - text
+        - rating
+        - createdAt
+        - author
+
+      properties:
+        id:
+          type: string
+
+        text:
+          type: string
+          minLength: 5
+          maxLength: 1024
+
+        rating:
+          type: integer
+          minimum: 1
+          maximum: 5
+
+        createdAt:
+          type: string
+          format: date-time
+
+        author:
+          $ref: '#/components/schemas/User'
+
+    CreateComment:
+      type: object
+      required:
+        - text
+        - rating
+
+      properties:
+        text:
+          type: string
+          minLength: 5
+          maxLength: 1024
+
+        rating:
+          type: integer
+          minimum: 1
+          maximum: 5
+    CreateUser:
+      type: object
+      required:
+        - name
+        - email
+        - password
+        - userType
+
+      properties:
+        name:
+          type: string
+          minLength: 1
+          maxLength: 15
+
+        email:
+          type: string
+          format: email
+
+        password:
+          type: string
+          format: password
+          minLength: 6
+          maxLength: 12
+          writeOnly: true
+
+        userType:
+          type: string
+          enum:
+            - regular
+            - pro
+
+        avatar:
+          type: string
+          format: uri
+    LoginUser:
+      type: object
+      required:
+        - email
+        - password
+
+      properties:
+        email:
+          type: string
+          format: email
+
+        password:
+          type: string
+          format: password
+          writeOnly: true
+    AuthToken:
+      type: object
+      required:
+        - token
+
+      properties:
+        token:
+          type: string
+          description: Токен авторизации
+          example: eyJhbGciOiJIUzI1NiJ9...
+    ApiError:
+      type: object
+      required:
+        - message
+      properties:
+        message:
+          type: string

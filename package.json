@@ -1,7 +1,7 @@
 {
   "name": "six-cities",
   "version": "4.0.0",
-  "description": "Проект «Шесть городов» от HTML Academy",
+  "description": "РџСЂРѕРµРєС‚ В«РЁРµСЃС‚СЊ РіРѕСЂРѕРґРѕРІВ» РѕС‚ HTML Academy",
   "keywords": [
     "rest",
     "api",
@@ -13,6 +13,7 @@
     "cli": "node dist/cli.js",
     "cli:pretty": "node dist/cli.js | pino-pretty",
     "build": "npm run clean && npm run compile",
+    "test": "npm run build && node --test tests/*.test.mjs",
     "lint": "eslint src/ --ext .ts",
     "compile": "tsc -p tsconfig.json",
     "clean": "rimraf dist",

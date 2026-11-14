@@ -3,9 +3,9 @@ import type { InferSchemaType, HydratedDocument } from 'mongoose';
 
 const userSchema = new Schema({
   name: String,
-  email: String,
-  avatar: String,
-  passwordHash: String,
+  email: {type: String, unique: true},
+  avatar: {type: String, default: 'default-avatar.png'},
+  passwordHash: {type: String, select: false},
   type: String,
 }, {
   timestamps: true,
