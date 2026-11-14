@@ -45,6 +45,7 @@
     "dotenv": "^18.0.8",
     "inversify": "^6.0.1",
     "json-server": "^1.0.0-beta.15",
+    "mongoose": "^9.11.2",
     "pino": "^10.4.0",
     "reflect-metadata": "^0.2.2"
   }

@@ -52,3 +52,62 @@ export function offerToTSV(offer: Offer): string {
   ].join('\t');
 }
 
+export function parseOffer(fields: string[]): Offer {
+  if (fields.length !== 21) {
+    throw new Error('Expected 21 fields in TSV row');
+  }
+
+  const [
+    title,
+    description,
+    date,
+    city,
+    previewImage,
+    housingImages,
+    isPremium,
+    isFavorite,
+    rating,
+    housingType,
+    roomCount,
+    guestCount,
+    rentPrice,
+    amenities,
+    name,
+    email,
+    avatar,
+    password,
+    userType,
+    latitude,
+    longitude
+  ] = fields;
+
+  return {
+    title,
+    description,
+    date: new Date(date),
+    city: city as Offer['city'],
+    previewImage,
+    housingImages: housingImages.split(';'),
+    isPremium: isPremium === 'true',
+    isFavorite: isFavorite === 'true',
+    rating: Number(rating),
+    housingType: housingType as Offer['housingType'],
+    roomCount: Number(roomCount),
+    guestCount: Number(guestCount),
+    rentPrice: Number(rentPrice),
+    amenities: amenities.split(';') as Offer['amenities'],
+    author: {
+      name,
+      email,
+      avatar,
+      password,
+      type: userType as Offer['author']['type']
+    },
+    coordinates: {
+      latitude: Number(latitude),
+      longitude: Number(longitude)
+    }
+  };
+}
+
+

@@ -20,8 +20,18 @@ cli.register(container.get(HelpCommand));
 cli.register(container.get(VersionCommand));
 
 async function main(): Promise<void> {
-  application.init();
-  await cli.run(process.argv.slice(2));
+  const args = process.argv.slice(2);
+  const uri = args[0] === '--import' ? args[2] : undefined;
+  if (args[0] === '--import' && !uri) {
+    throw new Error('Usage: --import <filepath> <mongodb-uri>');
+  }
+
+  await application.init(uri);
+  try {
+    await cli.run(args);
+  } finally {
+    await application.close();
+  }
 }
 
 main().catch((error: unknown) => {

@@ -12,7 +12,7 @@ export class HelpCommand implements ICommand {
         ${chalk.magentaBright.bold('Commands:')}
         ${chalk.greenBright('--help')}: ${chalk.blueBright('Show info about all commands')}
         ${chalk.greenBright('--version')}: ${chalk.blueBright('Show application`s version')}
-        ${chalk.greenBright('--import <path>')}: ${chalk.blueBright('Import data from TSV file')}
+        ${chalk.greenBright('--import <path>  <mongodb-uri>')}: ${chalk.blueBright('Import data from TSV file')}
         ${chalk.greenBright('--generate <n> <filepath> <url>')}: ${chalk.blueBright('Generate n offers ' +
             'based on the server data from the URL and save them to the filepath')}
     `);

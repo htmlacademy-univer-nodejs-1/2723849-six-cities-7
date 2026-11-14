@@ -5,6 +5,22 @@ import validator from 'convict-format-with-validator';
 convict.addFormats(validator);
 
 export const config = convict({
+  dbPort: {
+    env: 'DB_PORT',
+    format: 'port',
+    default: null,
+    nullable: false
+  },
+  dbName: {
+    env: 'DB_NAME',
+    format: (value: unknown) => {
+      if (typeof value !== 'string' || value.trim().length === 0) {
+        throw new Error('Missing required parameter \'dbName\'');
+      }
+    },
+    default: null,
+    nullable: false
+  },
   port: {
     env: 'PORT',
     format: 'port',
@@ -24,7 +40,7 @@ export const config = convict({
         throw new Error('SALT must be a non-empty string');
       }
     },
-    default: null,
+    default: '',
     nullable: false
   }
 });
