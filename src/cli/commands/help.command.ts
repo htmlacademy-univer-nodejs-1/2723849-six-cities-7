@@ -1,18 +1,20 @@
 import chalk from 'chalk';
-import {ICommand} from './command.interface';
+import {ICommand} from './command.interface.js';
+import {injectable} from 'inversify';
 
+@injectable()
 export class HelpCommand implements ICommand {
   execute(_args: string[]): void {
     console.info(`
-        ${chalk.yellowBright.bold('CLI программа для подготовки данных.')}
-        ${chalk.magentaBright.bold('Использование:')}
-        ${chalk.greenBright('cli.js --<Команда> [--Аргументыы]')}
-        ${chalk.magentaBright.bold('Команды:')}
-        ${chalk.greenBright('--help')}: ${chalk.blueBright('Показать справку')}
-        ${chalk.greenBright('--version')}: ${chalk.blueBright('Показать версию приложения')}
-        ${chalk.greenBright('--import <path>')}: ${chalk.blueBright('Импортировать данные из TSV-файла')}
-        ${chalk.greenBright('--generate <n> <filepath> <url>')}: ${chalk.blueBright('Сгенерировать n предложений' +
-                    'на основе данных с сервера лежащего по url и сохранить их в filepath ')}
+        ${chalk.yellowBright.bold('CLI application for data preparation.')}
+        ${chalk.magentaBright.bold('How to use:')}
+        ${chalk.greenBright('cli.js --<Command> [--Arguments]')}
+        ${chalk.magentaBright.bold('Commands:')}
+        ${chalk.greenBright('--help')}: ${chalk.blueBright('Show info about all commands')}
+        ${chalk.greenBright('--version')}: ${chalk.blueBright('Show application`s version')}
+        ${chalk.greenBright('--import <path>')}: ${chalk.blueBright('Import data from TSV file')}
+        ${chalk.greenBright('--generate <n> <filepath> <url>')}: ${chalk.blueBright('Generate n offers ' +
+            'based on the server data from the URL and save them to the filepath')}
     `);
   }
 

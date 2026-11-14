@@ -1,4 +1,4 @@
-export const UserTypes = ["Pro", "Regular"] as const;
+export const UserTypes = ['Pro', 'Regular'] as const;
 
 export type UserType = typeof UserTypes[number];
 

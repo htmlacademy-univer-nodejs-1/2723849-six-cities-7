@@ -70,7 +70,11 @@ npm start
 ```bash
 npm run mock:server
 ```
+#### Посмотреть логи
 
+```bash
+npm run cli:pretty
+```
 
 ## Структура проекта
 

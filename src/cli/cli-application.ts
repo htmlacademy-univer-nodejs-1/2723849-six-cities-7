@@ -1,5 +1,7 @@
 import type { ICommand } from './commands/command.interface.js';
+import {injectable} from 'inversify';
 
+@injectable()
 export class CLIApplication {
   private commands = new Map<string, ICommand>();
 

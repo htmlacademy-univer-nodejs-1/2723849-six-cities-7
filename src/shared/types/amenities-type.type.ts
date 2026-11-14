@@ -1,5 +1,5 @@
-export const AmenitiesTypes = ["Breakfast", "Air conditioning",
-"Laptop friendly workspace", "Baby seat", "Washer", "Towels", "Fridge"] as const;
+export const AmenitiesTypes = ['Breakfast', 'Air conditioning',
+  'Laptop friendly workspace', 'Baby seat', 'Washer', 'Towels', 'Fridge'] as const;
 
 export type AmenitiesType = typeof AmenitiesTypes[number];
 

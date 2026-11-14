@@ -1,6 +1,8 @@
 import { createReadStream } from 'node:fs';
 import { createInterface } from 'node:readline';
+import {injectable} from 'inversify';
 
+@injectable()
 export class TSVFileReader {
   async *read(filename: string): AsyncGenerator<string[]> {
     const stream = createReadStream(filename, { encoding: 'utf8' });

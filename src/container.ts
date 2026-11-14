@@ -1,0 +1,23 @@
+import { Container } from 'inversify';
+import {TYPES} from './shared/types/di.type.js';
+import {PinoLogger} from './shared/logger/pino-logger.js';
+import type { ILogger } from './shared/logger/logger.interface.js';
+import {Application} from './application.js';
+import {AppConfig, config} from './shared/config/config.js';
+import { ImportCommand } from './cli/commands/import.command.js';
+import { GenerateCommand } from './cli/commands/generate.command.js';
+import {CLIApplication} from './cli/cli-application.js';
+import {HelpCommand} from './cli/commands/help.command.js';
+import {VersionCommand} from './cli/commands/version.command.js';
+import {TSVFileReader} from './shared/file-reader/tsv-file-reader.js';
+
+export const container = new Container();
+container.bind<ILogger>(TYPES.Logger).to(PinoLogger).inSingletonScope();
+container.bind(Application).toSelf().inSingletonScope();
+container.bind<AppConfig>(TYPES.Config).toConstantValue(config);
+container.bind(ImportCommand).toSelf();
+container.bind(GenerateCommand).toSelf();
+container.bind(CLIApplication).toSelf();
+container.bind(HelpCommand).toSelf();
+container.bind(VersionCommand).toSelf();
+container.bind(TSVFileReader).toSelf();

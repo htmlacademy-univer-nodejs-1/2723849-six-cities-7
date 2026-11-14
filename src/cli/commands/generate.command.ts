@@ -1,12 +1,19 @@
-import {ICommand} from './command.interface';
+import {ICommand} from './command.interface.js';
 import axios from 'axios';
-import {MockServerDataType} from '../../shared/types/mock-server-data.type';
+import {MockServerDataType} from '../../shared/types/mock-server-data.type.js';
 import {createOffer, offerToTSV} from '../../shared/helpers/offer.js';
 import {createWriteStream} from 'node:fs';
 import { pipeline } from 'node:stream/promises';
 import chalk from 'chalk';
+import {inject, injectable} from 'inversify';
+import {ILogger} from '../../shared/logger/logger.interface.js';
+import {TYPES} from '../../shared/types/di.type.js';
 
+@injectable()
 export class GenerateCommand implements ICommand {
+  constructor(@inject(TYPES.Logger) private readonly logger: ILogger) {
+  }
+
   async execute(args: string[]): Promise<void> {
     const [count, filepath, url] = args;
     if (!count) {
@@ -28,7 +35,11 @@ export class GenerateCommand implements ICommand {
       generateRows(data, countNum),
       createWriteStream(filepath, {encoding: 'utf8'})
     );
-    console.log(chalk.green(`Создано предложений: ${countNum}. Файл: ${filepath}`));
+    console.log(chalk.green(`Generated ${countNum} offers to ${filepath}`));
+    this.logger.info(
+      'Generated successfully',
+      {count: countNum, filepath: filepath}
+    );
   }
 
   getName(): string {

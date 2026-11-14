@@ -1,7 +1,9 @@
-import {ICommand} from './command.interface';
+import {ICommand} from './command.interface.js';
 import {readFile} from 'node:fs/promises';
 import chalk from 'chalk';
+import {injectable} from 'inversify';
 
+@injectable()
 export class VersionCommand implements ICommand {
   async execute(_args: string[]): Promise<void> {
     const content = await readFile('package.json', 'utf8');
