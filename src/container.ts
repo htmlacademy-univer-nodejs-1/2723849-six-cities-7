@@ -1,3 +1,8 @@
+import {SessionModel, SessionEntity} from './shared/modules/auth/session.model.js';
+import {AuthService} from './shared/modules/auth/auth.service.js';
+import {FavouriteController} from './shared/modules/favourites/favourite.controller.js';
+import {CityController} from './shared/modules/city/city.controller.js';
+import {OfferController} from './shared/modules/offer/offer.controller.js';
 import {FavouriteModel, FavouriteEntity} from './shared/modules/favourites/favourite.model.js';
 import {FavouriteService} from './shared/modules/favourites/favourite.service.js';
 import type {IFavouriteService} from './shared/modules/favourites/favourite-service.interface.js';
@@ -49,3 +54,13 @@ container.bind<Model<CommentEntity>>(TYPES.CommentModel).toConstantValue(Comment
 container.bind<IFavouriteService>(TYPES.FavouriteService).to(FavouriteService).inSingletonScope();
 container.bind<Model<FavouriteEntity>>(TYPES.FavouriteModel).toConstantValue(FavouriteModel);
 container.bind<UserController>(TYPES.UserController).to(UserController).inSingletonScope();
+
+container.bind<OfferController>(TYPES.OfferController).to(OfferController).inSingletonScope();
+
+container.bind<CityController>(TYPES.CityController).to(CityController).inSingletonScope();
+
+container.bind<FavouriteController>(TYPES.FavouriteController).to(FavouriteController).inSingletonScope();
+
+container.bind<AuthService>(TYPES.AuthService).to(AuthService).inSingletonScope();
+
+container.bind<Model<SessionEntity>>(TYPES.SessionModel).toConstantValue(SessionModel);

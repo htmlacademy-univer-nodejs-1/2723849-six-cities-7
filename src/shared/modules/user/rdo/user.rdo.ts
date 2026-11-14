@@ -1,4 +1,5 @@
-import type {UserDocument} from '../user.model.js';
+import type {UserEntity} from '../user.model.js';
+import type {Types} from 'mongoose';
 
 export type UserRdo = {
   id: string;
@@ -8,11 +9,11 @@ export type UserRdo = {
   avatar: string;
 };
 
-export function toUserRdo(user: UserDocument): UserRdo {
+export function toUserRdo(user: UserEntity & {_id: Types.ObjectId}): UserRdo {
   return {
     id: user._id.toString(),
-    name: user.name!,
-    email: user.email!,
+    name: user.name as string,
+    email: user.email as string,
     userType: user.type === 'pro' || user.type === 'Pro'
       ? 'pro'
       : 'regular',

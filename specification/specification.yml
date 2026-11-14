@@ -1,4 +1,3 @@
-
 openapi: 3.0.0
 
 info:
@@ -398,6 +397,19 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ApiError'
+    delete:
+      operationId: logoutUser
+      summary: Завершить текущую сессию
+      tags:
+        - users
+      security:
+        - bearerAuth: []
+      responses:
+        '204':
+          description: Сессия завершена
+        '401':
+          description: Пользователь не авторизован
+
   /cities/{city}/premium:
     get:
       operationId: getPremiumOffers
@@ -546,7 +558,7 @@ components:
     bearerAuth:
       type: http
       scheme: bearer
-      bearerFormat: JWT
+      bearerFormat: opaque-session-token
 
   schemas:
     CreateOffer:
@@ -987,7 +999,7 @@ components:
         token:
           type: string
           description: Токен авторизации
-          example: eyJhbGciOiJIUzI1NiJ9...
+          example: 'opaque-session-token'
     ApiError:
       type: object
       required:
