@@ -11,7 +11,7 @@ import {CityController} from './shared/modules/city/city.controller.js';
 import {FavouriteController} from './shared/modules/favourites/favourite.controller.js';
 import {AuthService} from './shared/modules/auth/auth.service.js';
 import {HttpError} from './shared/libs/rest/http-error.js';
-import {errorHandler} from './shared/libs/rest/error-handler.js';
+import {IExceptionFilter} from './shared/libs/rest/exception-filter.interface.js';
 
 @injectable()
 export class Application {
@@ -26,7 +26,8 @@ export class Application {
     @inject(TYPES.OfferController) private readonly offerController: OfferController,
     @inject(TYPES.CityController) private readonly cityController: CityController,
     @inject(TYPES.FavouriteController) private readonly favouriteController: FavouriteController,
-    @inject(TYPES.AuthService) private readonly authService: AuthService
+    @inject(TYPES.AuthService) private readonly authService: AuthService,
+    @inject(TYPES.ExceptionFilter) private readonly exceptionFilter: IExceptionFilter
   ) {}
 
   public async init(uri?: string): Promise<void> {
@@ -37,7 +38,7 @@ export class Application {
     this.expressApp.use((_req, res) => {
       res.status(404).json({message: 'Маршрут не найден'});
     });
-    this.expressApp.use(errorHandler);
+    this.initExceptionFilters();
     const port = this.config.get('port');
     try {
       await new Promise<void>((resolve, reject) => {
@@ -78,6 +79,12 @@ export class Application {
     this.expressApp.use('/offers', this.offerController.router);
     this.expressApp.use('/cities', this.cityController.router);
     this.expressApp.use('/favorites', this.favouriteController.router);
+  }
+
+  private initExceptionFilters(): void {
+    this.expressApp.use(
+      this.exceptionFilter.catch.bind(this.exceptionFilter)
+    );
   }
 
   public async close(): Promise<void> {

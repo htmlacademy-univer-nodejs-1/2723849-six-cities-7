@@ -31,6 +31,8 @@ import {IOfferService} from './shared/modules/offer/offer-service.interface.js';
 import {OfferEntity, OfferModel} from './shared/modules/offer/offer.model.js';
 import {OfferService} from './shared/modules/offer/offer.service.js';
 import {UserController} from './shared/modules/user/user.controller.js';
+import {IExceptionFilter} from './shared/libs/rest/exception-filter.interface.js';
+import {ExceptionFilter} from './shared/libs/rest/exception-filter.js';
 
 export const container = new Container();
 container.bind<ILogger>(TYPES.Logger).to(PinoLogger).inSingletonScope();
@@ -47,20 +49,14 @@ container.bind<IUserService>(TYPES.UserService).to(UserService).inSingletonScope
 container.bind<Model<UserEntity>>(TYPES.UserModel).toConstantValue(UserModel);
 container.bind<IOfferService>(TYPES.OfferService).to(OfferService).inSingletonScope();
 container.bind<Model<OfferEntity>>(TYPES.OfferModel).toConstantValue(OfferModel);
-
 container.bind<ICommentService>(TYPES.CommentService).to(CommentService).inSingletonScope();
 container.bind<Model<CommentEntity>>(TYPES.CommentModel).toConstantValue(CommentModel);
-
 container.bind<IFavouriteService>(TYPES.FavouriteService).to(FavouriteService).inSingletonScope();
 container.bind<Model<FavouriteEntity>>(TYPES.FavouriteModel).toConstantValue(FavouriteModel);
 container.bind<UserController>(TYPES.UserController).to(UserController).inSingletonScope();
-
 container.bind<OfferController>(TYPES.OfferController).to(OfferController).inSingletonScope();
-
 container.bind<CityController>(TYPES.CityController).to(CityController).inSingletonScope();
-
 container.bind<FavouriteController>(TYPES.FavouriteController).to(FavouriteController).inSingletonScope();
-
 container.bind<AuthService>(TYPES.AuthService).to(AuthService).inSingletonScope();
-
 container.bind<Model<SessionEntity>>(TYPES.SessionModel).toConstantValue(SessionModel);
+container.bind<IExceptionFilter>(TYPES.ExceptionFilter).to(ExceptionFilter).inSingletonScope();

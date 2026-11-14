@@ -16,4 +16,5 @@ export const TYPES = {
   OfferModel: Symbol.for('OfferModel'),
   OfferService: Symbol.for('OfferService'),
   UserController: Symbol.for('UserController'),
+  ExceptionFilter: Symbol.for('ExceptionFilter'),
 };
